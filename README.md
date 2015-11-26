@@ -24,7 +24,7 @@ For documentation and examples please see the main [project blog][3].
 Requirements
 ------------
 * JMRI -- http://jmri.org/
-* An Arduino -- http://arduino.cc/ -- **Please note**: Arduinos without a separate FTDI chip will not work. This includes the Arduino Leonardo, Uno, and Mega 2560. This is because the JMRI code opens the serial port with both DTR and RTS off, while the Arduino USB CDC code requires either DTR or RTS to be set before it will communicate; without these signals set, it believes there is no device attached. The easiest way around this limitation is to use a "basic" Arduino with an FTDI or other hardware USB-Serial converter.
+* An Arduino -- http://arduino.cc/ -- **Please note**: It was previously thought that Arduinos without a true FTDI chip would not work. This has been proven false; we know that the Uno works, so others *should* work as well.
 
 Installation
 ------------
@@ -102,6 +102,9 @@ Troubleshooting
 ---------------
 **JMRI reports: unrecognized rep: "50 aa 00" etc / no responses to POLL requests**
 Make sure your `Serial.begin(...)` line is `Serial.begin(9600, SERIAL_8N2)`. Real C/MRI hardware uses 8 data bits, no parity, and *2* stop bits, which is different to regular serial which only has 1 stop bit. Most (i.e. cheap) USB to serial adapters will usually ignore the differences, however some are more rigorous in their parsing of serial data and won't work unless the Arduino is actually transmitting using 2 stop bits. Hence the `SERIAL_8N2` in the `Serial.begin(...)` line.
+
+**Other Issues with Serial**
+As stated above, previously there were issues with JMRI and non-FTDI-equipped Arduinos. This should not be a problem anymore (see [this issue](https://github.com/JMRI/JMRI/issues/259) and [this issue](https://github.com/madleech/ArduinoCMRI/issues/3) for more information) but if you encounter any problems it might not be a bad idea to try an Arduino with a true FTDI chip, such as a Duemilanove or a Nano.
 
 Protocol
 --------
